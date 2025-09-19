@@ -17,7 +17,7 @@ genai = Route(
         "llm architectures and fine-tuning",
         "prompt engineering"
     ],
-    metadata={"category": "GenAI"},
+    metadata={"category": "GenAI", "priority": 1},
     distance_threshold=0.72
 )
 
@@ -28,7 +28,7 @@ scifi = Route(
         "space opera recommendations",
         "dune and science fiction films"
     ],
-    metadata={"category": "entertainment"},
+    metadata={"category": "entertainment", "priority": 2},
     distance_threshold=0.72
 )
 
@@ -39,7 +39,7 @@ classical = Route(
         "beethoven mozart chopin",
         "structure of a symphony"
     ],
-    metadata={"category": "music"},
+    metadata={"category": "music", "priority": 3},
     distance_threshold=0.70
 )
 
