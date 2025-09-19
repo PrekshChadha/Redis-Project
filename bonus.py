@@ -4,16 +4,10 @@
 """
 
 import os
+from redisvl.extensions.router import Route, SemanticRouter
+from redisvl.utils.vectorize import HFTextVectorizer
 
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
-
-try:
-    from redisvl.extensions.router import Route, SemanticRouter
-    from redisvl.utils.vectorize import HFTextVectorizer
-except Exception as e:
-    raise SystemExit(
-        "Missing dependencies. Install with: pip install redisvl sentence-transformers\nError: " + str(e)
-    )
+# Defining Routes 
 
 genai = Route(
     name="GenAI",
@@ -50,17 +44,15 @@ classical = Route(
 )
 
 # --- Build router ---
-# Change redis_url if your Redis is at another host/port
 
-
-redis_url = os.environ.get("REDIS_URL", "redis://172.16.22.22:16041")
+redis_url = "redis://172.16.22.22:16041"
 
 router = SemanticRouter(
     name="topic-router",
     vectorizer=HFTextVectorizer(),        
     routes=[genai, scifi, classical],
     redis_url=redis_url,
-    overwrite=True                        
+    overwrite=True      # Blow away any other routing index with this name                       
 )
 
 queries = [
@@ -69,8 +61,11 @@ queries = [
     "Recommend a space opera novel",
     "How many moons do we have?",
     "what is 10 + 20?",
+    "Suggest some classical music",
+    "Can you explain the ending of Interstellar sci-fi movie?", 
 ]
 
 for q in queries:
     match = router(q)             
     print(match.name if match.name else "No route matched")
+
